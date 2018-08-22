@@ -1,14 +1,31 @@
-#http://nintendowispy.keepdream.in/?theme=Kylf&websockport=18881&websocketserver=NintendoWiSpy.local&inputdelay=275
+#sloppy, perhaps, but this is the first version of my program that actually works!
 
 from websocket import *
+import sys
 
-ws = create_connection("ws://nintendowispy.local:18881")
+connected = False
+
+while not connected:
+    try:
+        ws = create_connection("ws://nintendowispy.local:18881")
+        connected = True
+    except:
+        print("Could not connect, retrying...")
+
 print("Receiving...")
+
+press_counter = {'Start': 0, 'Y': 0, 'X': 0, 'B': 0, 'A': 0, 'L': 0, 'R': 0, 'Z': 0, 'D-Up': 0, 'D-Down': 0,
+                        'D-Right': 0, 'D-Left': 0}
+
+previous_buttons = []
+
 while 1:
+
     data = ws.recv()
     b = str(bytes(data, 'utf-8'))
     c = b.strip("b'")
     d = list(c)
+
     if len(d) == 9:
         pass
     elif len(d) != 9:
@@ -17,6 +34,14 @@ while 1:
 
         for button in buttons:
             if buttons[button] == '1':
-                print(button)
+                if button not in previous_buttons:
+                    previous_buttons.append(button)
+                    press_counter[button] += 1
+                    print(press_counter)
+            else:
+                try:
+                    previous_buttons.remove(button)
+                except:
+                    pass
 
 ws.close()
