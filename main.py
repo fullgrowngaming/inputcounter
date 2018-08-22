@@ -1,4 +1,7 @@
-#sloppy, perhaps, but this is the first version of my program that actually works!
+#Updated to not have that except/pass block there at the end. I realize the logic could be clean up,
+#but it works fggYay
+
+#to-do: implement a way to leave the loop with a final button count 
 
 from websocket import *
 import sys
@@ -7,6 +10,7 @@ connected = False
 
 while not connected:
     try:
+        print("Attempting connection...")
         ws = create_connection("ws://nintendowispy.local:18881")
         connected = True
     except:
@@ -39,9 +43,7 @@ while 1:
                     press_counter[button] += 1
                     print(press_counter)
             else:
-                try:
+                if button in previous_buttons:
                     previous_buttons.remove(button)
-                except:
-                    pass
 
 ws.close()
