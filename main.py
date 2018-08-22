@@ -30,9 +30,7 @@ while 1:
     c = b.strip("b'")
     d = list(c)
 
-    if len(d) == 9:
-        pass
-    elif len(d) != 9:
+    if len(d) != 9:
         buttons = {'Start': d[15], 'Y': d[19], 'X': d[23], 'B': d[27], 'A': d[31], 'L': d[39], 'R': d[43], 'Z': d[47],
                    'D-Up': d[51], 'D-Down': d[55], 'D-Right': d[59], 'D-Left': d[63]}
 
